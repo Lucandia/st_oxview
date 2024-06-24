@@ -1,0 +1,69 @@
+<html>
+  <body>
+    <!-- Set up your HTML here -->
+    <div id='oxview_frame'> </div>
+
+    <script>
+      // ----------------------------------------------------
+      // Just copy/paste these functions as-is:
+
+      function sendMessageToStreamlitClient(type, data) {
+        var outData = Object.assign({
+          isStreamlitMessage: true,
+          type: type,
+        }, data);
+        window.parent.postMessage(outData, "*");
+      }
+
+      function init() {
+        sendMessageToStreamlitClient("streamlit:componentReady", {apiVersion: 1});
+      }
+
+      function setFrameHeight(height) {
+        sendMessageToStreamlitClient("streamlit:setFrameHeight", {height: height});
+      }
+
+      // The `data` argument can be any JSON-serializable value.
+      function sendDataToPython(data) {
+        sendMessageToStreamlitClient("streamlit:setComponentValue", data);
+      }
+
+      // ----------------------------------------------------
+      // OxView setup
+
+      var oxview_frame = document.getElementById("oxview_frame");
+
+      // data is any JSON-serializable value you sent from Python,
+      // and it's already deserialized for you.
+      function onDataFromPython(event) {
+        if (event.data.type !== "streamlit:render") return;
+        let files_text = event.data.args.files_text;
+        let width = event.data.args.width;
+        if (width === undefined) width = "99%";
+        let height = event.data.args.height;
+        if (height === undefined) height = "500";
+
+        oxview_frame.innerHTML = '<iframe width="' + width + '" height="' + height + '"  src="./oxview_src/index.html?' + files_text + '" id="oxview-frame-1"></iframe>';
+      }
+
+      // myInput.addEventListener("change", function() {
+      //   sendDataToPython({
+      //     value: myInput.value,
+      //     dataType: "json",
+      //   });
+      // })
+
+      // Hook things up!
+      window.addEventListener("message", onDataFromPython);
+      init();
+
+      // Hack to autoset the iframe height.
+      window.addEventListener("load", function() {
+        window.setTimeout(function() {
+          setFrameHeight(document.documentElement.clientHeight)
+        }, 0);
+      });
+
+    </script>
+  </body>
+</html>
