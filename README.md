@@ -61,8 +61,13 @@ oxview_from_file(configuration=conf_text, # text of the configuration file
 
 ## How to cite:
 
-Please include this citation if the Streamlit oxView Component is used in an academic study:
+## How to cite:
 
+Please include this citation if the OxView Component is used in an academic study:
 
+```
+Lucandia. Lucandia/st_oxview; Zenodo, 2024. https://zenodo.org/doi/10.5281/zenodo.12515559.
+```
 
+[![DOI](https://zenodo.org/badge/819322738.svg)](https://zenodo.org/doi/10.5281/zenodo.12515559)
 
