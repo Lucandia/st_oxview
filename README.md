@@ -71,3 +71,9 @@ Lucandia. Lucandia/st_oxview; Zenodo, 2024. https://zenodo.org/doi/10.5281/zenod
 
 [![DOI](https://zenodo.org/badge/819322738.svg)](https://zenodo.org/doi/10.5281/zenodo.12515559)
 
+
+## License
+
+Code is licensed under the GNU General Public License v3.0 ([GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html))
+
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-lightgrey.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
