@@ -9,7 +9,7 @@ setup(
     version='0.0.0',
     author='Luca Monari',
     author_email='Luca.Monari@mr.mpg.de',
-    description='A Streamlit component for the 3D visualization of coarse-grained DNA/RNA 3D structures',
+    description='A Streamlit component for the display of coarse-grained DNA/RNA 3D models.',
     long_description_content_type="text/markdown",
     long_description=long_description,
     packages=find_packages(),

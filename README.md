@@ -1,6 +1,6 @@
 # Streamlit Oxview Component
 
-A Streamlit component for the 3D visualization of coarse-grained DNA/RNA
+A Streamlit component for the display of coarse-grained DNA/RNA 3D models.
 
 This is a simple component that renders coarse-grained DNA/RNA 3D models. It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-viewer.git).
 
