@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='st_oxview',
-    version='0.0.3',
+    version='0.0.4',
     author='Luca Monari',
     author_email='Luca.Monari@mr.mpg.de',
     description='A Streamlit component for the display of coarse-grained DNA/RNA 3D models.',

@@ -1,6 +1,5 @@
 import streamlit.components.v1 as components
 import os
-import shutil
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 oxview_static_folder = os.path.join(os.path.join(parent_dir, "oxview_src"), "static")
@@ -29,6 +28,9 @@ def oxview_from_file(configuration=None, topology=None, forces=None, pdb=None, w
     oxdna_file_text = ''
     for src, name, ox_name in zip(srcs, names, oxview_file_type):
         if src is not None:
-            shutil.copyfile(src, os.path.join(oxview_static_folder, name))
+            with open(src, "rb") as f:
+                src_content = f.read()
+            with open(os.path.join(oxview_static_folder, name), "wb") as f:
+                f.write(src_content)
             oxdna_file_text += f'&{ox_name}=.%2Fstatic%2F{name}'
     _component_func(files_text = oxdna_file_text[1:], width=width, height=height, **kwargs)
