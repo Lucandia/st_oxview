@@ -20,42 +20,24 @@ Look at the [example](https://stoxview.streamlit.app/) for a simple example:
 
 ## Usage
 
+**IMPORTANT**: The component requires the configuration, topology, and forces files (or pdb file) to be saved in the static folder of streamlit. The component will not work if the files are not saved in the static folder.
+
 ### Display from file paths
 
 ```
 import streamlit as st
 from st_oxview import oxview_from_file
 
-oxview_from_file(configuration=path_to_conf, # path to the configuration file
-                 topology=path_to_topo,      # path to the topology file
-                 forces=None,                # path to the forces file
-                 pdb=None,                   # path to the pdb file
-                 width='99%',                # width of the viewer frame
-                 height='500',               # height of the viewer frame
-                 key=None)                   # streamlit component key
+# the conf_file_name is the name of the configuration file in the static folder
+# the topo_file_name is the name of the topology file in the static folder
 
-```
-
-### Display from text
-
-```
-import streamlit as st
-from st_oxview import oxview_from_text
-
-with open("configuration.dat", "r") as f:
-    conf_text = f.read()
-
-with open("topology.top", "r") as f:
-    topo_text = f.read()
-
-oxview_from_file(configuration=conf_text, # text of the configuration file
-                 topology=topo_text,      # text of the topology file
-                 forces=None,             # text of the forces file
-                 pdb=None,                # text of the pdb file
-                 width='99%',             # width of the viewer frame
-                 height='500',            # height of the viewer frame
-                 key=None)                # streamlit component key
-
+oxview_from_file(configuration=conf_file_name, # path to the configuration file
+                 topology=topo_file_name,      # path to the topology file
+                 forces=None,                  # path to the forces file
+                 pdb=None,                     # path to the pdb file
+                 width='99%',                  # width of the viewer frame
+                 height='500',                 # height of the viewer frame
+                 key=None)                     # streamlit component key
 
 ```
 
