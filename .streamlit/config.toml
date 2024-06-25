@@ -1,0 +1,6 @@
+[theme]
+font="monospace"
+base="light"
+
+[server]
+enableStaticServing = true
