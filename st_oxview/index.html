@@ -64,6 +64,7 @@
 
         const serverUrl = window.location.origin;
         t_files = t_files.map(file => serverUrl + file);
+        console.log(t_files);
         oxview_frame.innerHTML = '<iframe width="' + width + '" height="' + height + '"  src="./oxview_src/index.html" id="oxview-frame-1" onload="handle()"></iframe>';
       }
 
