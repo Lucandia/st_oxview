@@ -1,5 +1,6 @@
 import streamlit as st
-from st_oxview import oxview_from_text, oxview_from_file
+import os
+from st_oxview import oxview_from_file
 
 
 if __name__ == "__main__":
@@ -22,18 +23,30 @@ if __name__ == "__main__":
         with col1:
             dat = st.file_uploader("Upload a configuration file (.dat)", type=["dat"])
             if dat:
-                dat = dat.getvalue()
+                with open('static' + os.path.sep + dat.name, 'wb') as f:
+                    f.write(dat.getvalue())
         with col2:
             top = st.file_uploader("Upload a topology fil (.top)e", type=["top"])
             if top:
-                top = top.getvalue()
+                with open('static' + os.path.sep + top.name, 'wb') as f:
+                    f.write(top.getvalue())
         with col3:
             txt = st.file_uploader("Upload aforce file (.txt)", type=["txt"])
             if txt:
-                txt = txt.getvalue()
+                with open('static' + os.path.sep + txt.name, 'wb') as f:
+                    f.write(txt.getvalue())
+
     elif file_type == "PDB":
         pdb = st.file_uploader("Upload a PDB file", type=["pdb"])
         if pdb:
-            pdb = pdb.getvalue()
-
-    oxview_from_text(configuration=dat, topology=top, forces=txt, pdb=pdb, key='custom_upload')
+            with open('static' + os.path.sep + pdb.name, 'wb') as f:
+                f.write(pdb.getvalue())
+                
+    if dat and top:
+        oxview_from_file(configuration=dat.name, topology=top.name, key = 'dat_top')
+    elif dat and top and txt:
+        oxview_from_file(configuration=dat.name, topology=top.name, forces=txt.name, key = 'dat_top_txt')
+    elif pdb:
+        oxview_from_file(pdb=pdb.name, key = 'pdb')
+    else:
+        oxview_from_file(key = 'empty')
