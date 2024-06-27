@@ -6,9 +6,9 @@ This is a simple component that renders coarse-grained DNA/RNA 3D models. It is 
 
 ## Installation
 
-```
-pip install st_oxview
-```
+**This component requires access to write files to the disk.**
+
+**To use this component in your Streamlit app, download the repository and insert the folder `st_oxview_component` into your project.**
 
 ## Example
 
@@ -24,7 +24,7 @@ Look at the [example](https://stoxview.streamlit.app/) for a simple example:
 
 ```
 import streamlit as st
-from st_oxview import oxview_from_file
+from st_oxview_component import oxview_from_file
 
 oxview_from_file(configuration=path_to_conf, # path to the configuration file
                  topology=path_to_topo,      # path to the topology file
