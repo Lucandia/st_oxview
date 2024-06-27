@@ -22,7 +22,10 @@ def oxview_from_text(configuration=None, topology=None, forces=None, pdb=None, w
                 oxdna_file_text += f'&{ox_name}=.%2Fstatic%2F{name}'
             except Exception as e:
                 print(e)
+                _component_func(files_text = '', width=width, height=height, **kwargs)
+                return False
     _component_func(files_text = oxdna_file_text[1:], width=width, height=height, **kwargs)
+    return True
 
 def oxview_from_file(configuration=None, topology=None, forces=None, pdb=None, width='99%', height=500, **kwargs):
     srcs = [configuration, topology, forces, pdb]
@@ -39,4 +42,7 @@ def oxview_from_file(configuration=None, topology=None, forces=None, pdb=None, w
                 oxdna_file_text += f'&{ox_name}=.%2Fstatic%2F{name}'
             except Exception as e:
                 print(e)
+                _component_func(files_text = '', width=width, height=height, **kwargs)
+                return False
     _component_func(files_text = oxdna_file_text[1:], width=width, height=height, **kwargs)
+    return True

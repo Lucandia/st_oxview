@@ -26,13 +26,13 @@ Look at the [example](https://stoxview.streamlit.app/) for a simple example:
 import streamlit as st
 from st_oxview_component import oxview_from_file
 
-oxview_from_file(configuration=path_to_conf, # path to the configuration file
-                 topology=path_to_topo,      # path to the topology file
-                 forces=None,                # path to the forces file
-                 pdb=None,                   # path to the pdb file
-                 width='99%',                # width of the viewer frame
-                 height='500',               # height of the viewer frame
-                 key=None)                   # streamlit component key
+success = oxview_from_file(configuration=path_to_conf, # path to the configuration file
+                           topology=path_to_topo,      # path to the topology file
+                           forces=None,                # path to the forces file
+                           pdb=None,                   # path to the pdb file
+                           width='99%',                # width of the viewer frame
+                           height='500',               # height of the viewer frame
+                           key=None)                   # streamlit component key
 
 ```
 
@@ -48,16 +48,18 @@ with open("configuration.dat", "r") as f:
 with open("topology.top", "r") as f:
     topo_text = f.read()
 
-oxview_from_file(configuration=conf_text, # text of the configuration file
-                 topology=topo_text,      # text of the topology file
-                 forces=None,             # text of the forces file
-                 pdb=None,                # text of the pdb file
-                 width='99%',             # width of the viewer frame
-                 height='500',            # height of the viewer frame
-                 key=None)                # streamlit component key
+success = oxview_from_file(configuration=conf_text, # text of the configuration file
+                           topology=topo_text,      # text of the topology file
+                           forces=None,             # text of the forces file
+                           pdb=None,                # text of the pdb file
+                           width='99%',             # width of the viewer frame
+                           height='500',            # height of the viewer frame
+                           key=None)                # streamlit component key
 
 
 ```
+
+The functions return a boolean value indicating if the program was able to write and read the files.
 
 ## How to cite:
 
