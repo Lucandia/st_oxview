@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from st_oxview import oxview_from_file
+from st_oxview_component import oxview_from_file
 
 
 if __name__ == "__main__":
