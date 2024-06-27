@@ -33,39 +33,17 @@
 
       var oxview_frame = document.getElementById("oxview_frame");
 
-      var t_files, t_ext, width, height; // Declare variables outside
-
-      function handle() {
-        let inbox_settings = ["Monomer", "Origin"];
-        let frame_id = "1";
-        let t_blobs = [];
-        for (let i = 0; i < t_files.length; i++) {
-          let f = new XMLHttpRequest();
-          f.open("GET", t_files[i], false);
-          f.onreadystatechange = function () {
-            t_blobs.push(new Blob([f.responseText], {type: 'text/plain'}));
-          }
-          f.send(null);
-        }
-        const frame = document.getElementById('oxview-frame-1');
-        frame.contentWindow.postMessage({message: 'iframe_drop', files: t_blobs, ext: t_ext, inbox_settings: inbox_settings});
-      }
-
       // data is any JSON-serializable value you sent from Python,
       // and it's already deserialized for you.
       function onDataFromPython(event) {
         if (event.data.type !== "streamlit:render") return;
-        t_files = event.data.args.files_path;
-        t_ext = event.data.args.files_extension;
-        width = event.data.args.width;
+        let files_text = event.data.args.files_text;
+        let width = event.data.args.width;
         if (width === undefined) width = "99%";
-        height = event.data.args.height;
+        let height = event.data.args.height;
         if (height === undefined) height = "500";
 
-        const serverUrl = window.location.origin;
-        t_files = t_files.filter(file => file !== '').map(file => serverUrl + file);
-        console.log(t_files);
-        oxview_frame.innerHTML = '<iframe width="' + width + '" height="' + height + '"  src="./oxview_src/index.html" id="oxview-frame-1" onload="handle()"></iframe>';
+        oxview_frame.innerHTML = '<iframe width="' + width + '" height="' + height + '"  src="./oxview_src/index.html?' + files_text + '" id="oxview-frame-1"></iframe>';
       }
 
       // myInput.addEventListener("change", function() {
