@@ -1,0 +1,1 @@
+In this folder are stored the static files with the 3D models to be displayed by the Streamlit component.
