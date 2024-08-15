@@ -17,6 +17,12 @@ Look at the [example](https://stoxview.streamlit.app/) for a streamlit Web App:
 
 ## Usage
 
+### Installation
+
+```
+pip install st_oxview
+```
+
 ### Display with drag and drop
 
 You can make a empty oxview fram and drag and drop the files to the frame.
