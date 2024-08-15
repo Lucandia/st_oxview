@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='st_oxview',
-    version='0.0.1',
+    version='0.1.0',
     author='Luca Monari',
     author_email='Luca.Monari@mr.mpg.de',
     url="https://github.com/Lucandia/st_oxview",
