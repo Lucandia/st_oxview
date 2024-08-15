@@ -1,7 +1,6 @@
 import streamlit as st
 from st_oxview import oxview_from_file, oxview_from_text
 
-
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
 
