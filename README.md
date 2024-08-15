@@ -7,6 +7,10 @@ It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-vie
 
 **This component requires access to write files to the temporary directory.**
 
+```
+pip install st_oxview
+```
+
 ## Example
 
 ![Alt Text](https://github.com/Lucandia/st_oxview/blob/main/example.png?raw=true)
@@ -16,12 +20,6 @@ Look at the [example](https://stoxview.streamlit.app/) for a streamlit Web App:
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://stoxview.streamlit.app/)
 
 ## Usage
-
-### Installation
-
-```
-pip install st_oxview
-```
 
 ### Display with drag and drop
 
