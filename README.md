@@ -9,7 +9,7 @@ It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-vie
 
 ## Example
 
-![Alt Text](example.png)
+![Alt Text](https://github.com/Lucandia/st_oxview/blob/main/example.png?raw=true)
 
 Look at the [example](https://stoxview.streamlit.app/) for a streamlit Web App:
 
