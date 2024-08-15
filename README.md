@@ -1,39 +1,50 @@
 # Streamlit Oxview Component
 
 A Streamlit component for the display of coarse-grained DNA/RNA 3D models.
-
-This is a simple component that renders coarse-grained DNA/RNA 3D models. It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-viewer.git).
+It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-viewer.git).
 
 ## Installation
 
-**This component requires access to write files to the disk.**
-
-**To use this component in your Streamlit app, download the repository and insert the folder `st_oxview_component` into your project.**
+**This component requires access to write files to the temporary directory.**
 
 ## Example
 
 ![Alt Text](example.png)
 
-Look at the [example](https://stoxview.streamlit.app/) for a simple example:
+Look at the [example](https://stoxview.streamlit.app/) for a streamlit Web App:
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://stoxview.streamlit.app/)
 
 ## Usage
 
+### Display with drag and drop
+
+You can make a empty oxview fram and drag and drop the files to the frame.
+
+```
+import streamlit as st
+from st_oxview import oxview_from_text
+
+success = oxview_from_file()
+
+```
+*Just drag and drop the files to the frame.*
+
+
 ### Display from file paths
 
 ```
 import streamlit as st
-from st_oxview_component import oxview_from_file
+from st_oxview import oxview_from_file
 
 success = oxview_from_file(configuration=path_to_conf, # path to the configuration file
                            topology=path_to_topo,      # path to the topology file
                            forces=None,                # path to the forces file
                            pdb=None,                   # path to the pdb file
+                           js_script=None,             # path to the javascript script file
                            width='99%',                # width of the viewer frame
                            height='500',               # height of the viewer frame
                            key=None)                   # streamlit component key
-
 ```
 
 ### Display from text
@@ -52,6 +63,7 @@ success = oxview_from_file(configuration=conf_text, # text of the configuration 
                            topology=topo_text,      # text of the topology file
                            forces=None,             # text of the forces file
                            pdb=None,                # text of the pdb file
+                           js_script=None,          # text of the javascript script file
                            width='99%',             # width of the viewer frame
                            height='500',            # height of the viewer frame
                            key=None)                # streamlit component key
