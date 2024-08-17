@@ -38,11 +38,11 @@
       // ----------------------------------------------------
       // OxView setup
 
-      function handle(t_files, file_types) {
+      function handle(t_files, file_types, frame_id) {
         console.log(t_files);
         console.log(file_types);
         const inbox_settings = ["Monomer", "Origin"];
-        const frame_id = "1";
+        // const frame_id = "1";
         const t_blobs = [];
 
         for (let i = 0; i < t_files.length; i++) {
@@ -56,7 +56,7 @@
           f.send(null);
         }
 
-        const frame = document.getElementById("oxview-frame-1");
+        const frame = document.getElementById("oxview-frame-" + frame_id);
         console.log(frame);
         frame.contentWindow.postMessage({
           message: "iframe_drop",
@@ -76,17 +76,19 @@
         if (width === undefined) width = "99%";
         let height = event.data.args.height;
         if (height === undefined) height = "500";
+        let frame_id = event.data.args.frame_id;
 
         oxview_frame.innerHTML =
           '<iframe width="' +
           width +
           '" height="' +
           height +
-          '" src="./oxview_src/index.html" id="oxview-frame-1"></iframe>';
+          '" src="./oxview_src/index.html" id="oxview-frame-' + frame_id + '"></iframe>';
+        console.log('Frame id: ' + frame_id)
 
         // Call handle function after the iframe is loaded
-        document.getElementById("oxview-frame-1").onload = function () {
-          handle(t_files, file_types);
+        document.getElementById("oxview-frame-" + frame_id).onload = function () {
+          handle(t_files, file_types, frame_id);
         };
       }
 

@@ -8,6 +8,7 @@ class OxviewComponent:
     def __init__(self):
         """Initialize the OxviewComponent class and set up the environment."""
         self.has_setup = False
+        self._frame_counter = 0
         self.oxview_folder = None
         self.temp_folder = None
         self.current_temp_files = []  # List to track created temporary files
@@ -39,6 +40,7 @@ class OxviewComponent:
         - height: Height of the component display
         """
         self.setup()  # Ensure the environment is set up
+        self._frame_counter += 1
         file_texts = [configuration, topology, forces, pdb, js_script]
         names = ["struct.dat", "struct.top", "structforces.txt", "struct.pdb", 'script.js']
         oxdna_file_paths = []  # List to store the paths of the created temporary files
@@ -61,10 +63,10 @@ class OxviewComponent:
                         self.current_temp_files.append(temp_file.name)  # Keep track of the file for cleanup
                 except Exception as e:
                     print(f"Error processing {name}: {e}")
-                    _component_func(files_text='', width=width, height=height, **kwargs)
+                    _component_func(files_text='', width=width, height=height, frame_id = self._frame_counter, **kwargs)
                     return False
         # Call the Oxview component with the list of file paths and their types
-        _component_func(files_text=oxdna_file_paths, file_types=file_types, width=width, height=height, **kwargs)
+        _component_func(files_text=oxdna_file_paths, file_types=file_types, width=width, height=height, frame_id = self._frame_counter, **kwargs)
         return True
 
     def oxview_from_file(self, configuration=None, topology=None, forces=None, pdb=None, js_script=None, width='99%', height=500, **kwargs):

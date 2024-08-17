@@ -7,7 +7,7 @@ if __name__ == "__main__":
     st.title("OxView Frame Component Examples")
 
     st.write('Pdb entry: 8BTZ')
-    oxview_from_file(pdb='example_8btz.pdb', key='dna_duplex')
+    oxview_from_file(pdb='example_8btz.pdb', key='rna_nanostructure')
 
     st.markdown("## OxView from file upload")
 
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     top_text = None
     txt_text = None
     pdb_text = None
-    file_type = st.selectbox("Select a file type", ["Oxdna (.dat, .top, .txt)", "PDB"])
+    file_type = st.selectbox("Select a file type", ["PDB", "Oxdna (.dat, .top, .txt)"])
 
     if file_type == "Oxdna (.dat, .top, .txt)":
         col1, col2, col3 = st.columns(3) 
@@ -44,4 +44,4 @@ if __name__ == "__main__":
     with col2:
         height = st.slider("Height", min_value=50, max_value=1000, value=500)
         
-    oxview_from_text(configuration=dat_text, topology=top_text, forces=txt_text, pdb=pdb_text, width=width, height=height, key='dna_duplex4')
+    oxview_from_text(configuration=dat_text, topology=top_text, forces=txt_text, pdb=pdb_text, width=width, height=height, key='load_structure')
