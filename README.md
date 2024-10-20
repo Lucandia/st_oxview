@@ -1,7 +1,7 @@
 # Streamlit Oxview Component
 
 A Streamlit component for the display of coarse-grained DNA/RNA 3D models.
-It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-viewer.git).
+It is a wrapper around the [oxdna-viewer](https://github.com/sulcgroup/oxdna-viewer.git). The colormap is always disabled.
 
 ## Installation
 

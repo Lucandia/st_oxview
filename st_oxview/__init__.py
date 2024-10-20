@@ -2,6 +2,7 @@ import os
 import shutil
 import atexit
 import tempfile
+import IPython
 import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 
@@ -27,21 +28,43 @@ class OxviewComponent:
                 shutil.copytree(os.path.dirname(os.path.abspath(__file__)), self.oxview_folder)
             self.has_setup = True  # Mark setup as complete to prevent re-initialization
 
-    def oxview_from_text(self, configuration=None, topology=None, 
-                         forces=None, pdb=None, js_script=None, 
-                         width='99%', height=500, colormap=None, 
-                         index_colors=(), **kwargs):
-        """
-        Create and manage temporary files for the given text configurations and pass them to the Oxview component.
+    def oxview_from_text(self, configuration: str = None, topology: str = None, 
+                         forces: str = None, pdb: str = None, js_script: str = None, 
+                         width: str | int = '99%', height: str | int = 500, 
+                         colormap: str = None, 
+                         index_colors: list | tuple = (), **kwargs):
+        """Load and visualize molecular structures in OxView from text inputs.
 
-        Parameters:
-        - configuration: Text for configuration file
-        - topology: Text for topology file
-        - forces: Text for forces file
-        - pdb: Text for pdb file
-        - js_script: JavaScript code as text
-        - width: Width of the component display
-        - height: Height of the component display
+        Parameters
+        ----------
+        configuration : str, optional
+            The configuration file content as a string.
+        topology : str, optional
+            The topology file content as a string.
+        forces : str, optional
+            The forces file content as a string.
+        pdb : str, optional
+            The PDB file content as a string.
+        js_script : str, optional
+            The JavaScript script content as a string.
+        width : str or int, optional
+            The width of the visualization frame, by default '99%'.
+        height : str or int, optional
+            The height of the visualization frame, by default 500.
+        colormap : str, optional
+            The colormap to use for visualization, by default None (you can use any of the colormaps available in matplotlib).
+        index_colors : list or tuple, optional
+            A list or tuple of integers specifying the nucleotide colors according to the colormap gradient, by default ().
+        **kwargs : dict
+            Additional keyword arguments to pass to the visualization component.
+        Returns
+        -------
+        bool
+            True if the visualization is successfully created, False otherwise.
+        Raises
+        ------
+        ValueError
+            If the text type for any file is invalid.
         """
         self.setup()  # Ensure the environment is set up
         self._frame_counter += 1
@@ -107,18 +130,43 @@ class OxviewComponent:
                         frame_id=self._frame_counter, **kwargs)
         return True
 
-    def oxview_from_file(self, configuration=None, topology=None, forces=None, pdb=None, js_script=None, width='99%', height=500, colormap=None, index_colors=(), **kwargs):
-        """
-        Read content from files and pass it to the oxview_from_text function.
+    def oxview_from_file(self, configuration: str = None, topology: str = None, 
+                         forces: str = None, pdb: str = None, js_script: str = None, 
+                         width: str | int = '99%', height: str | int = 500, 
+                         colormap: str = None, 
+                         index_colors: list | tuple = (), **kwargs):
+        """Load and visualize molecular structures in OxView from text inputs.
 
-        Parameters:
-        - configuration: Path to the configuration file
-        - topology: Path to the topology file
-        - forces: Path to the forces file
-        - pdb: Path to the pdb file
-        - js_script: Path to the JavaScript file
-        - width: Width of the component display
-        - height: Height of the component display
+        Parameters
+        ----------
+        configuration : str, optional
+            The configuration file content as a string.
+        topology : str, optional
+            The topology file content as a string.
+        forces : str, optional
+            The forces file content as a string.
+        pdb : str, optional
+            The PDB file content as a string.
+        js_script : str, optional
+            The JavaScript script content as a string.
+        width : str or int, optional
+            The width of the visualization frame, by default '99%'.
+        height : str or int, optional
+            The height of the visualization frame, by default 500.
+        colormap : str, optional
+            The colormap to use for visualization, by default None (you can use any of the colormaps available in matplotlib).
+        index_colors : list or tuple, optional
+            A list or tuple of integers specifying the nucleotide colors according to the colormap gradient, by default ().
+        **kwargs : dict
+            Additional keyword arguments to pass to the visualization component.
+        Returns
+        -------
+        bool
+            True if the visualization is successfully created, False otherwise.
+        Raises
+        ------
+        ValueError
+            If the text type for any file is invalid.
         """
         files_text = []
         for src in [configuration, topology, forces, pdb, js_script]:
@@ -133,6 +181,7 @@ class OxviewComponent:
                                      js_script=files_text[4], width=width, height=height, 
                                      colormap=colormap, index_colors=index_colors,
                                      **kwargs)
+    
 
     def cleanup_temp_files(self):
         """Clean up temporary files and directories created during the session."""
