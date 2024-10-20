@@ -1,4 +1,5 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 from st_oxview import oxview_from_file, oxview_from_text
 
 if __name__ == "__main__":
@@ -7,7 +8,12 @@ if __name__ == "__main__":
     st.title("OxView Frame Component Examples")
 
     st.write('Pdb entry: 8BTZ')
-    oxview_from_file(pdb='example_8btz.pdb', key='rna_nanostructure')
+    colormap = st.selectbox("Choose Maplotlib colormap", [None] + plt.colormaps())
+    oxview_from_file( topology='example_8btz.top', 
+                     configuration='example_8btz.dat',
+                     key='rna_nanostructure', 
+                     index_colors=[i for i in range(238)] * bool(colormap), 
+                     colormap=colormap)
 
     st.markdown("## OxView from file upload")
 

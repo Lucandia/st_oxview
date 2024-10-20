@@ -38,7 +38,7 @@
       // ----------------------------------------------------
       // OxView setup
 
-      function handle(t_files, file_types, frame_id) {
+      function handle(t_files, file_types, frame_id, colormap) {
         console.log(t_files);
         console.log(file_types);
         const inbox_settings = ["Monomer", "Origin"];
@@ -64,6 +64,11 @@
           ext: file_types,
           inbox_settings: inbox_settings,
         });
+
+        
+        if (colormap !== undefined) {
+          frame.contentWindow.api?.changeColormap(colormap);
+        }
       }
 
       // data is any JSON-serializable value you sent from Python,
@@ -77,6 +82,7 @@
         let height = event.data.args.height;
         if (height === undefined) height = "500";
         let frame_id = event.data.args.frame_id;
+        let colormap = event.data.args.colormap;
 
         oxview_frame.innerHTML =
           '<iframe width="' +
@@ -88,7 +94,7 @@
 
         // Call handle function after the iframe is loaded
         document.getElementById("oxview-frame-" + frame_id).onload = function () {
-          handle(t_files, file_types, frame_id);
+          handle(t_files, file_types, frame_id, colormap);
         };
       }
 

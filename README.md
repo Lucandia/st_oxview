@@ -46,6 +46,8 @@ success = oxview_from_file(configuration=path_to_conf, # path to the configurati
                            forces=None,                # path to the forces file
                            pdb=None,                   # path to the pdb file
                            js_script=None,             # path to the javascript script file
+                           colormap=None,              # name of the Matplotlib colormap
+                           index_colors=None,          # A color for each index according to the colormap (list of values between 0 and 1)
                            width='99%',                # width of the viewer frame
                            height='500',               # height of the viewer frame
                            key=None)                   # streamlit component key
@@ -68,6 +70,8 @@ success = oxview_from_file(configuration=conf_text, # text of the configuration 
                            forces=None,             # text of the forces file
                            pdb=None,                # text of the pdb file
                            js_script=None,          # text of the javascript script file
+                           colormap=None,           # name of the Matplotlib colormap
+                           index_colors=None,       # A color for each index according to the colormap (list of values between 0 and 1)
                            width='99%',             # width of the viewer frame
                            height='500',            # height of the viewer frame
                            key=None)                # streamlit component key

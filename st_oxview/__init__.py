@@ -2,6 +2,7 @@ import os
 import shutil
 import atexit
 import tempfile
+import matplotlib.pyplot as plt
 import streamlit.components.v1 as components
 
 class OxviewComponent:
@@ -26,7 +27,10 @@ class OxviewComponent:
                 shutil.copytree(os.path.dirname(os.path.abspath(__file__)), self.oxview_folder)
             self.has_setup = True  # Mark setup as complete to prevent re-initialization
 
-    def oxview_from_text(self, configuration=None, topology=None, forces=None, pdb=None, js_script=None, width='99%', height=500, **kwargs):
+    def oxview_from_text(self, configuration=None, topology=None, 
+                         forces=None, pdb=None, js_script=None, 
+                         width='99%', height=500, colormap=None, 
+                         index_colors=(), **kwargs):
         """
         Create and manage temporary files for the given text configurations and pass them to the Oxview component.
 
@@ -65,11 +69,45 @@ class OxviewComponent:
                     print(f"Error processing {name}: {e}")
                     _component_func(files_text='', width=width, height=height, frame_id = self._frame_counter, **kwargs)
                     return False
+                
+        if topology is None and colormap and index_colors:
+            print("Colormap and base colors are only supported when a topology file is provided. Ignoring colormap and base colors.")
+            colormap = None
+            index_colors = ()
+        if colormap and colormap not in plt.colormaps():
+            print(f"Colormap '{colormap}' not found in the list of available matplotlib colormaps. Switching to default colormap.")
+            colormap = None
+        if index_colors:
+            if not all(isinstance(c, int) for c in index_colors):
+                print("Base colors must be specified as a list of intergers. Ignoring base colors.")
+                index_colors = ()
+            else:
+                try:
+                    file_types.append('json')
+                    # Create a temporary file in the oxview folder
+                    with tempfile.NamedTemporaryFile(dir=self.oxview_folder, suffix=f'.json', delete=False) as temp_file:
+
+                        temp_file.write('{"Positions" :'.encode("utf-8")) # create the json dictionary
+                        temp_file.write(str(index_colors).encode("utf-8")) # add the colors
+                        temp_file.write("}".encode("utf-8")) # add the closing bracket
+
+                        temp_file.flush()  # Ensure all data is written to disk
+
+                        oxdna_file_paths.append(temp_file.name.split(os.sep)[-1])  # Store the relative path
+                        self.current_temp_files.append(temp_file.name)  # Keep track of the file for cleanup
+                except Exception as e:
+                    if "json" in file_types:
+                        file_types.remove("json") 
+                    print(f"Error processing base colors: {e}")
+
         # Call the Oxview component with the list of file paths and their types
-        _component_func(files_text=oxdna_file_paths, file_types=file_types, width=width, height=height, frame_id = self._frame_counter, **kwargs)
+        _component_func(files_text=oxdna_file_paths, file_types=file_types, 
+                        width=width, height=height, 
+                        colormap=colormap,
+                        frame_id=self._frame_counter, **kwargs)
         return True
 
-    def oxview_from_file(self, configuration=None, topology=None, forces=None, pdb=None, js_script=None, width='99%', height=500, **kwargs):
+    def oxview_from_file(self, configuration=None, topology=None, forces=None, pdb=None, js_script=None, width='99%', height=500, colormap=None, index_colors=(), **kwargs):
         """
         Read content from files and pass it to the oxview_from_text function.
 
@@ -90,7 +128,11 @@ class OxviewComponent:
             else:
                 files_text.append(None)
         # Pass the file content to oxview_from_text
-        return self.oxview_from_text(configuration=files_text[0], topology=files_text[1], forces=files_text[2], pdb=files_text[3], js_script=files_text[4], width=width, height=height, **kwargs)
+        return self.oxview_from_text(configuration=files_text[0], topology=files_text[1], 
+                                     forces=files_text[2], pdb=files_text[3], 
+                                     js_script=files_text[4], width=width, height=height, 
+                                     colormap=colormap, index_colors=index_colors,
+                                     **kwargs)
 
     def cleanup_temp_files(self):
         """Clean up temporary files and directories created during the session."""

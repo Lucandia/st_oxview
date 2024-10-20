@@ -273,7 +273,7 @@ var api;
         }
         //colormap doesn't look right unless the light is 100%
         pointlight.intensity = 1.0;
-        renderColorbar();
+        // renderColorbar();
     }
     api.showColorbar = showColorbar;
     function changeColormap(name) {
