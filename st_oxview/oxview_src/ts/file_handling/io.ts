@@ -197,7 +197,7 @@ class TrajectoryReader {
 
             if(last){
             //finish up indexing
-                notify("Finished indexing!");
+                // notify("Finished indexing!");
                 //dirty hack to handle single conf case
                 if(indices.length==1){
                     this.trajectorySlider.hidden=true;
