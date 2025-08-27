@@ -48,6 +48,7 @@ success = oxview_from_file(configuration=path_to_conf, # path to the configurati
                            js_script=None,             # path to the javascript script file
                            colormap=None,              # name of the Matplotlib colormap
                            index_colors=None,          # A color for each index according to the colormap (list of values between 0 and 1)
+                           frame_id=None,                 # ID of the oxView frame: if a frame ID is set, it will be reused instead of creating a new frame
                            width='99%',                # width of the viewer frame
                            height='500',               # height of the viewer frame
                            key=None)                   # streamlit component key

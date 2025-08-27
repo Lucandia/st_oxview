@@ -261,6 +261,7 @@ var api;
     api.removeColorbar = removeColorbar;
     //turns out that lut doesn't save the sprites so you have to completley remake it
     function showColorbar() {
+        return
         colorbarScene.add(lut.legend.mesh);
         let notation, decimal;
         lut.maxV - lut.minV > 0.09 ? notation = 'decimal' : notation = 'scientific';
@@ -273,7 +274,7 @@ var api;
         }
         //colormap doesn't look right unless the light is 100%
         pointlight.intensity = 1.0;
-        // renderColorbar();
+        renderColorbar();
     }
     api.showColorbar = showColorbar;
     function changeColormap(name) {

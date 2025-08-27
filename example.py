@@ -13,7 +13,8 @@ if __name__ == "__main__":
                      configuration='example_8btz.dat',
                      key='rna_nanostructure', 
                      index_colors=[i for i in range(238)] * bool(colormap), 
-                     colormap=colormap)
+                     colormap=colormap,
+                     frame_id=1)
 
     st.markdown("## OxView from file upload")
 

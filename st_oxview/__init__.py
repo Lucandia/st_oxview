@@ -4,6 +4,7 @@ import atexit
 import tempfile
 import IPython
 import matplotlib.pyplot as plt
+import streamlit as st
 import streamlit.components.v1 as components
 
 class OxviewComponent:
@@ -11,6 +12,7 @@ class OxviewComponent:
         """Initialize the OxviewComponent class and set up the environment."""
         self.has_setup = False
         self._frame_counter = 0
+        self._resetted = False  # Internal flag to prevent multiple setups
         self.oxview_folder = None
         self.temp_folder = None
         self.current_temp_files = []  # List to track created temporary files
@@ -28,11 +30,16 @@ class OxviewComponent:
                 shutil.copytree(os.path.dirname(os.path.abspath(__file__)), self.oxview_folder)
             self.has_setup = True  # Mark setup as complete to prevent re-initialization
 
+    @st.fragment
     def oxview_from_text(self, configuration: str = None, topology: str = None, 
                          forces: str = None, pdb: str = None, js_script: str = None, 
                          width: str | int = '99%', height: str | int = 500, 
                          colormap: str = None, 
-                         index_colors: list | tuple = (), **kwargs):
+                         index_colors: list | tuple = (), 
+                         frame_id: int | None = None,
+                         reset_scene: bool = True,
+                         reset_camera: bool = False,
+                         **kwargs):
         """Load and visualize molecular structures in OxView from text inputs.
 
         Parameters
@@ -55,6 +62,13 @@ class OxviewComponent:
             The colormap to use for visualization, by default None (you can use any of the colormaps available in matplotlib).
         index_colors : list or tuple, optional
             A list or tuple of integers specifying the nucleotide colors according to the colormap gradient, by default ().
+        frame_id : int or None, optional
+            The ID of the frame to visualize, by default None.
+            If None, a new frame will be created.
+        reset_scene : bool, optional
+            Whether to reset the scene when visualizing, by default True.
+        reset_camera : bool, optional
+            Whether to reset the camera when visualizing and using the same ID, by default False.
         **kwargs : dict
             Additional keyword arguments to pass to the visualization component.
         Returns
@@ -67,11 +81,16 @@ class OxviewComponent:
             If the text type for any file is invalid.
         """
         self.setup()  # Ensure the environment is set up
-        self._frame_counter += 1
+        if frame_id is None:
+            self._frame_counter += 1
+            frame_id = self._frame_counter
+
+        self._resetted = False  # Reset the flag for future calls
         file_texts = [configuration, topology, forces, pdb, js_script]
         names = ["struct.dat", "struct.top", "structforces.txt", "struct.pdb", 'script.js']
         oxdna_file_paths = []  # List to store the paths of the created temporary files
         file_types = []  # List to store the types of files being processed
+        files_content = []
         for text, name in zip(file_texts, names):
             if text is not None:
                 try:
@@ -81,16 +100,28 @@ class OxviewComponent:
                     with tempfile.NamedTemporaryFile(dir=self.oxview_folder, suffix=f'.{suffix}', delete=False) as temp_file:
                         if isinstance(text, bytes):
                             temp_file.write(text)
+                            text_to_send = text.decode("utf-8", errors="ignore")
                         elif isinstance(text, str):
+                            text_to_send = text
                             temp_file.write(text.encode("utf-8"))  # Write the text content to the file
                         else:
                             raise ValueError(f"Invalid text type for {name}")
                         temp_file.flush()  # Ensure all data is written to disk
                         oxdna_file_paths.append(temp_file.name.split(os.sep)[-1])  # Store the relative path
                         self.current_temp_files.append(temp_file.name)  # Keep track of the file for cleanup
+
+                    files_content.append(text_to_send)
+
                 except Exception as e:
                     print(f"Error processing {name}: {e}")
-                    _component_func(files_text='', width=width, height=height, frame_id = self._frame_counter, **kwargs)
+                    _component_func(files_text='',
+                                    width=width, 
+                                    height=height, 
+                                    frame_id=frame_id, 
+                                    files_content=[],
+                                    reset_scene=reset_scene,
+                                    reset_camera=reset_camera,
+                                    **kwargs)
                     return False
                 
         if topology is None and colormap and index_colors:
@@ -109,15 +140,16 @@ class OxviewComponent:
                     file_types.append('json')
                     # Create a temporary file in the oxview folder
                     with tempfile.NamedTemporaryFile(dir=self.oxview_folder, suffix=f'.json', delete=False) as temp_file:
-
-                        temp_file.write('{"Positions" :'.encode("utf-8")) # create the json dictionary
-                        temp_file.write(str(index_colors).encode("utf-8")) # add the colors
-                        temp_file.write("}".encode("utf-8")) # add the closing bracket
+                        json_text = '{"Positions" :' + str(index_colors) + "}"
+                        temp_file.write(json_text.encode("utf-8"))
 
                         temp_file.flush()  # Ensure all data is written to disk
 
                         oxdna_file_paths.append(temp_file.name.split(os.sep)[-1])  # Store the relative path
                         self.current_temp_files.append(temp_file.name)  # Keep track of the file for cleanup
+
+                        files_content.append(json_text)
+
                 except Exception as e:
                     if "json" in file_types:
                         file_types.remove("json") 
@@ -127,14 +159,22 @@ class OxviewComponent:
         _component_func(files_text=oxdna_file_paths, file_types=file_types, 
                         width=width, height=height, 
                         colormap=colormap,
-                        frame_id=self._frame_counter, **kwargs)
+                        frame_id=frame_id,
+                        files_content=files_content,
+                        reset_scene=reset_scene,
+                        reset_camera=reset_camera,
+                        **kwargs)
         return True
 
     def oxview_from_file(self, configuration: str = None, topology: str = None, 
                          forces: str = None, pdb: str = None, js_script: str = None, 
                          width: str | int = '99%', height: str | int = 500, 
                          colormap: str = None, 
-                         index_colors: list | tuple = (), **kwargs):
+                         index_colors: list | tuple = (),
+                         frame_id: int | None = None,
+                         reset_scene: bool = True,
+                         reset_camera: bool = False,
+                         **kwargs):
         """Load and visualize molecular structures in OxView from text inputs.
 
         Parameters
@@ -157,6 +197,13 @@ class OxviewComponent:
             The colormap to use for visualization, by default None (you can use any of the colormaps available in matplotlib).
         index_colors : list or tuple, optional
             A list or tuple of integers specifying the nucleotide colors according to the colormap gradient, by default ().
+        frame_id : int or None, optional
+            The ID of the frame to visualize, by default None.
+            If None, a new frame will be created.
+        reset_scene : bool, optional
+            Whether to reset the scene when visualizing, by default True.
+        reset_camera : bool, optional
+            Whether to reset the camera when visualizing and using the same ID, by default False.
         **kwargs : dict
             Additional keyword arguments to pass to the visualization component.
         Returns
@@ -180,6 +227,9 @@ class OxviewComponent:
                                      forces=files_text[2], pdb=files_text[3], 
                                      js_script=files_text[4], width=width, height=height, 
                                      colormap=colormap, index_colors=index_colors,
+                                     frame_id=frame_id,
+                                     reset_scene=reset_scene,
+                                     reset_camera=reset_camera,
                                      **kwargs)
     
 
