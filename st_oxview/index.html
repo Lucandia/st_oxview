@@ -101,6 +101,13 @@
           }
         }
 
+        if (colormap !== undefined && colormap !== null) {
+          t_blobs.push(new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" }));
+          file_types.push('js');
+
+
+        }
+
         frame.contentWindow.postMessage({
           message: "iframe_drop",
           files: t_blobs,
@@ -108,17 +115,18 @@
           inbox_settings: inbox_settings,
         });
 
+        // OLD OTHER OPTION TO SEPARE COLORMAPS
         // if (colormap !== undefined && colormap !== null) {
         //   frame.contentWindow.api?.changeColormap?.(colormap);
         // }
-        if (colormap !== undefined && colormap !== null) {
-          frame.contentWindow.postMessage({
-            message: "iframe_drop",
-            files: [new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" })],
-            ext: ['js'],
-            inbox_settings: inbox_settings,
-          });  
-        }
+        // if (colormap !== undefined && colormap !== null) {
+        //   frame.contentWindow.postMessage({
+        //     message: "iframe_drop",
+        //     files: [new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" })],
+        //     ext: ['js'],
+        //     inbox_settings: inbox_settings,
+        //   });  
+        // }
       }
 
       function attachOnLoadOnce(frame, frame_id) {
