@@ -101,12 +101,11 @@
           }
         }
 
-        if (colormap !== undefined && colormap !== null) {
-          t_blobs.push(new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" }));
-          file_types.push('js');
-
-
-        }
+        // Other version to load the colormap with the rest, but sometimes it fails stochastically
+        // if (colormap !== undefined && colormap !== null) {
+        //   t_blobs.push(new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" }));
+        //   file_types.push('js');
+        // }
 
         frame.contentWindow.postMessage({
           message: "iframe_drop",
@@ -119,14 +118,15 @@
         // if (colormap !== undefined && colormap !== null) {
         //   frame.contentWindow.api?.changeColormap?.(colormap);
         // }
-        // if (colormap !== undefined && colormap !== null) {
-        //   frame.contentWindow.postMessage({
-        //     message: "iframe_drop",
-        //     files: [new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" })],
-        //     ext: ['js'],
-        //     inbox_settings: inbox_settings,
-        //   });  
-        // }
+        // run this after the structure is added makes sure that it's loaded properly
+        if (colormap !== undefined && colormap !== null) {
+          frame.contentWindow.postMessage({
+            message: "iframe_drop",
+            files: [new Blob([`api.changeColormap('${colormap}')`], { type: "text/plain" })],
+            ext: ['js'],
+            inbox_settings: inbox_settings,
+          });  
+        }
       }
 
       function attachOnLoadOnce(frame, frame_id) {
