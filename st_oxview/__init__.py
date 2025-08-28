@@ -83,7 +83,7 @@ class OxviewComponent:
         self.setup()  # Ensure the environment is set up
         if frame_id is None:
             self._frame_counter += 1
-            frame_id = self._frame_counter
+            frame_id = None
 
         self._resetted = False  # Reset the flag for future calls
         file_texts = [configuration, topology, forces, pdb, js_script]
